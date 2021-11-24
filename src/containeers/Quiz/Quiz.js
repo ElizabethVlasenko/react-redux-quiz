@@ -5,14 +5,27 @@ import ActiveQuiz from '../../components/ActiveQuiz/ActiveQuiz';
 class Quiz extends Component {
 
     state = {
+        activeQuestion: 0,
         quiz: [
             {   
-                question:'Question 1',
+                id: 1,
+                question:'What does HTML stand for?',
                 answers: [
-                    {text: 'answer 1', id: 1},
-                    {text: 'answer 2', id: 2},
-                    {text: 'answer 3', id: 3},
-                    {text: 'answer 4', id: 4},
+                    {text: 'Hypertext Machine language', id: 1},
+                    {text: 'Hypertext and links markup language', id: 2},
+                    {text: 'Hypertext Markup Language', id: 3},
+                    {text: 'Hightext machine language', id: 4},
+                ],
+                rightAnswerId: 3
+            },
+            {   
+                id: 2,
+                question:'How is document type initialized in HTML5?',
+                answers: [
+                    {text: '</DOCTYPE HTML>', id: 1},
+                    {text: '<!DOCTYPE HTML>', id: 2},
+                    {text: '</DOCTYPE>', id: 3},
+                    {text: '</DOCTYPE html>', id: 4},
                 ],
                 rightAnswerId: 2
             }
@@ -20,8 +33,11 @@ class Quiz extends Component {
     }
 
     onAnswerClickHandler = (answerId) => {
-        console.log(answerId);
-
+        if (this.state.activeQuestion < this.state.quiz.length - 1 ) {
+            this.setState({
+                activeQuestion: this.state.activeQuestion + 1
+            })
+        }
     }
 
     render () {
@@ -30,9 +46,11 @@ class Quiz extends Component {
                 <h1>Answer all questions</h1>
                 <div className={classes.QuizWrapper}>
                     <ActiveQuiz
-                        question={this.state.quiz[0].question}
-                        answers={this.state.quiz[0].answers}
-                        onAnswerClick={this.onAnswerClickHandler}
+                        question = { this.state.quiz[this.state.activeQuestion].question }
+                        answers = { this.state.quiz[this.state.activeQuestion].answers }
+                        onAnswerClick = { this.onAnswerClickHandler }
+                        quizLength = { this.state.quiz.length }
+                        questionNumber = { this.state.activeQuestion + 1 }
                     />
                 </div>
             </div>
