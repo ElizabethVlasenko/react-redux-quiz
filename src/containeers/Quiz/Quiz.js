@@ -6,6 +6,15 @@ class Quiz extends Component {
 
     state = {
         quiz: [
+            {
+                answers: [
+                    {text: 'answer 1'},
+                    {text: 'answer 2'},
+                    {text: 'answer 3'},
+                    {text: 'answer 4'},
+                
+                ]
+            }
 
         ]
     }
@@ -13,9 +22,11 @@ class Quiz extends Component {
     render () {
         return (
             <div className={classes.Quiz}>
-                <h1>Quiz</h1>
+                <h1>Answer all questions</h1>
                 <div className={classes.QuizWrapper}>
-                    <ActiveQuiz></ActiveQuiz>
+                    <ActiveQuiz
+                        answers={this.state.quiz[0].answers}
+                    />
                 </div>
             </div>
 
