@@ -2,12 +2,20 @@ import React from "react";
 import classes from './AnswerItem.module.css';
 
 const AnswerItem = props => {
+    const cls = [classes.AnswerItem];
+
+    if (props.state) {
+        cls.push(classes[props.state])
+    }
+
+    console.log(cls);
+
     return (
         <li 
-            className={classes.AnswerItem} 
-            onClick = {() => props.onAnswerClick(props.answer.id)}
+            className={cls.join(' ')} // classes.AnswerItem or classes.AnswerItem success classes.AnswerItem error
+           onClick = {cls.length < 2 ? () => props.onAnswerClick(props.answer.id) : null }
         >
-            {props.answer.text}
+            {props.answer.id}. {props.answer.text}
         </li>
     )
 };
