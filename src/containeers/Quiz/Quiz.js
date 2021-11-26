@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import classes from './Quiz.module.css';
 import ActiveQuiz from '../../components/ActiveQuiz/ActiveQuiz';
+import FinishedQuiz from '../../components/FinishedQuiz/FinishedQuiz';
 
 class Quiz extends Component {
 
     state = {
+        isFinished: true,
         activeQuestion: 0,
         answerState: null, //current user click { [id]: 'success' 'error'}
         quiz: [
@@ -29,12 +31,42 @@ class Quiz extends Component {
                     {text: '</DOCTYPE html>', id: 4},
                 ],
                 rightAnswerId: 2
+            },
+            {   
+                id: 3,
+                question:'Which of the following HTML Elements is used for making any text bold?',
+                answers: [
+                    {text: '<i>', id: 1},
+                    {text: '<li>', id: 2},
+                    {text: '<p>', id: 3},
+                    {text: '<b>', id: 4},
+                ],
+                rightAnswerId: 4
+            },
+            {   
+                id: 4,
+                question:'Which of the following HTML element is used for creating an unordered list?',
+                answers: [
+                    {text: '<ui>', id: 1},
+                    {text: '<li>', id: 2},
+                    {text: '<ul>', id: 3},
+                    {text: '<em>', id: 4},
+                ],
+                rightAnswerId: 3
             }
+            
         ]
     }
 
-
     onAnswerClickHandler = answerId => {
+
+        if(this.state.answerState){
+            const key = Object.keys(this.state.answerState); //get answerState id
+
+            if (this.state.answerState[key] === 'success') {
+                 return;
+            }
+        }
 
         const question = this.state.quiz[this.state.activeQuestion]
 
@@ -44,9 +76,11 @@ class Quiz extends Component {
                 answerState:{ [answerId] : 'success'}
         })
 
-
             const timeout = window.setTimeout(() => {
                 if(this.isQuizFinished()){
+                    this.setState({
+                        isFinished: true
+                    })
 
                 } else {
                     this.setState({
@@ -61,7 +95,7 @@ class Quiz extends Component {
         else {
             
             this.setState({
-                answerState:{ [answerId] : 'error'}
+                answerState:{[answerId] : 'error'}
             })
         }
 
@@ -71,20 +105,27 @@ class Quiz extends Component {
         return this.state.activeQuestion + 1 === this.state.quiz.length;
     }
 
-
     render () {
         return (
             <div className={classes.Quiz}>
-                <h1>Answer all questions</h1>
                 <div className={classes.QuizWrapper}>
-                    <ActiveQuiz
-                        question = { this.state.quiz[this.state.activeQuestion].question }
-                        answers = { this.state.quiz[this.state.activeQuestion].answers }
-                        onAnswerClick = { this.onAnswerClickHandler }
-                        quizLength = { this.state.quiz.length }
-                        questionNumber = { this.state.activeQuestion + 1 }
-                        state = { this.state.answerState }
-                    />
+                    <h1>Answer all questions</h1>
+                    {
+                        this.state.isFinished 
+                        ? <FinishedQuiz
+
+                        />
+                        : <ActiveQuiz
+                            question = { this.state.quiz[this.state.activeQuestion].question }
+                            answers = { this.state.quiz[this.state.activeQuestion].answers }
+                            onAnswerClick = { this.onAnswerClickHandler }
+                            quizLength = { this.state.quiz.length }
+                            questionNumber = { this.state.activeQuestion + 1 }
+                            state = { this.state.answerState }
+                         /> 
+                    }
+
+                    
                 </div>
             </div>
 

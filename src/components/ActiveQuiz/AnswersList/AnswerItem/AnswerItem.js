@@ -8,8 +8,6 @@ const AnswerItem = props => {
         cls.push(classes[props.state])
     }
 
-    console.log(cls);
-
     return (
         <li 
             className={cls.join(' ')} // classes.AnswerItem or classes.AnswerItem success classes.AnswerItem error
