@@ -7,7 +7,7 @@ class Quiz extends Component {
 
     state = {
         results: {}, //{ [id]: 'success' 'error'} for all questions
-        isFinished: false,
+        isFinished: true,
         activeQuestion: 0,
         answerState: null, //current user click { [id]: 'success' 'error'}
         quiz: [
