@@ -76,6 +76,7 @@ export default class Auth extends Component {
     });
     this.setState({ isFormValid, formControls });
   };
+
   renderInputs() {
     return Object.keys(this.state.formControls).map((controlName, index) => {
       const control = this.state.formControls[controlName];

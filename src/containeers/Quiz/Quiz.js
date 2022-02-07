@@ -59,7 +59,7 @@ class Quiz extends Component {
     ],
   };
 
-  retryHeldler = () => {
+  retryHandler = () => {
     this.setState({
       results: {},
       isFinished: false,
@@ -73,7 +73,7 @@ class Quiz extends Component {
       const key = Object.keys(this.state.answerState); //get answerState id
 
       if (this.state.answerState[key] === "success") {
-        //queation answer!
+        //question answer!
         return;
       }
     }
@@ -128,7 +128,7 @@ class Quiz extends Component {
             <FinishedQuiz
               results={this.state.results}
               quiz={this.state.quiz}
-              onRetry={this.retryHeldler}
+              onRetry={this.retryHandler}
             />
           ) : (
             <ActiveQuiz
