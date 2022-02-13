@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import classes from "./Quiz.module.css";
 import ActiveQuiz from "../../components/ActiveQuiz/ActiveQuiz";
 import FinishedQuiz from "../../components/FinishedQuiz/FinishedQuiz";
+import axios from "../../axios/axios-quiz";
+import Loader from "../../components/UI/Loader/Loader";
+import WithRouter from "../../hoc/WithRouter/WithRouter";
 
 class Quiz extends Component {
   state = {
@@ -9,54 +12,8 @@ class Quiz extends Component {
     isFinished: false,
     activeQuestion: 0,
     answerState: null, //current user click { [id]: 'success' 'error'}
-    quiz: [
-      {
-        id: 1,
-        question: "What does HTML stand for?",
-        answers: [
-          { text: "Hypertext Machine language", id: 1 },
-          { text: "Hypertext and links markup language", id: 2 },
-          { text: "Hypertext Markup Language", id: 3 },
-          { text: "Hightext machine language", id: 4 },
-        ],
-        rightAnswerId: 3,
-      },
-      {
-        id: 2,
-        question: "How is document type initialized in HTML5?",
-        answers: [
-          { text: "</DOCTYPE HTML>", id: 1 },
-          { text: "<!DOCTYPE HTML>", id: 2 },
-          { text: "</DOCTYPE>", id: 3 },
-          { text: "</DOCTYPE html>", id: 4 },
-        ],
-        rightAnswerId: 2,
-      },
-      {
-        id: 3,
-        question:
-          "Which of the following HTML Elements is used for making any text bold?",
-        answers: [
-          { text: "<i>", id: 1 },
-          { text: "<li>", id: 2 },
-          { text: "<p>", id: 3 },
-          { text: "<b>", id: 4 },
-        ],
-        rightAnswerId: 4,
-      },
-      {
-        id: 4,
-        question:
-          "Which of the following HTML element is used for creating an unordered list?",
-        answers: [
-          { text: "<ui>", id: 1 },
-          { text: "<li>", id: 2 },
-          { text: "<ul>", id: 3 },
-          { text: "<em>", id: 4 },
-        ],
-        rightAnswerId: 3,
-      },
-    ],
+    quiz: [],
+    loading: true,
   };
 
   retryHandler = () => {
@@ -93,7 +50,6 @@ class Quiz extends Component {
         });
       }
 
-      console.log(this.state.results);
       const timeout = window.setTimeout(() => {
         if (this.isQuizFinished()) {
           this.setState({
@@ -119,12 +75,26 @@ class Quiz extends Component {
     return this.state.activeQuestion + 1 === this.state.quiz.length;
   }
 
+  async componentDidMount() {
+    try {
+      const response = await axios.get(
+        `/quizzes/${this.props.match.params.id}.json`
+      );
+      const quiz = response.data;
+      this.setState({ quiz, loading: false });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   render() {
     return (
       <div className={classes.Quiz}>
         <div className={classes.QuizWrapper}>
           <h1>Answer all questions</h1>
-          {this.state.isFinished ? (
+          {this.state.loading ? (
+            <Loader />
+          ) : this.state.isFinished ? (
             <FinishedQuiz
               results={this.state.results}
               quiz={this.state.quiz}
@@ -146,4 +116,4 @@ class Quiz extends Component {
   }
 }
 
-export default Quiz;
+export default WithRouter(Quiz);
