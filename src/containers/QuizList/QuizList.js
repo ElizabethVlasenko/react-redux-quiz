@@ -20,7 +20,6 @@ class QuizList extends Component {
 
   componentDidMount() {
     this.props.fetchQuizzes();
-    console.log(this.props.fetchQuizzes);
   }
 
   render() {
